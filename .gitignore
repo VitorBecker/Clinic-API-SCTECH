@@ -1,0 +1,52 @@
+# Dependências do Node (nunca enviar)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Arquivos compilados pelo TypeScript
+dist/
+build/
+*.tsbuildinfo
+
+# Variáveis de ambiente / Segredos
+.env
+.env.local
+.env.*.local
+.env.vault
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs do sistema
+logs/
+*.log
+
+# Pastas de diagnóstico ou testes
+coverage/
+.nyc_output/
+
+# Configurações de IDEs e Editores de Código
+
+# WebStorm / IntelliJ PHPStorm / JetBrains
+.idea/
+
+# Visual Studio Code (exceto se quiser versionar as extensions recomendadas)
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Gerenciadores de pacotes
+.pnp.js
+.pnpm-store/
+.yarn/install-state.gz
+
+# Padrão do WebStorm
+/tmp
+/out-tsc
+/.pnp
