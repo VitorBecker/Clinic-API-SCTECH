@@ -6,7 +6,11 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
+<<<<<<< HEAD
 export enum UserarioRole {
+=======
+export enum UsuarioRole {
+>>>>>>> feat/rbac
     PACIENTE = "PACIENTE",
     MEDICO = "MEDICO",
     ADMIN = "ADMIN"
@@ -28,10 +32,17 @@ export class Usuario {
 
   @Column({
     type: 'enum',
+<<<<<<< HEAD
     enum: UserarioRole,
     default: UserarioRole.PACIENTE,
   })
   role!: UserarioRole;
+=======
+    enum: UsuarioRole,
+    default: UsuarioRole.PACIENTE,
+  })
+  role!: UsuarioRole;
+>>>>>>> feat/rbac
 
   @CreateDateColumn({ name: 'created_at' })
   criadoEm!: Date;

@@ -1,5 +1,9 @@
 import { userRepository } from '../repositories/UsersRepository';
+<<<<<<< HEAD
 import { Usuario, UserarioRole } from '../entities/users';
+=======
+import { Usuario, UsuarioRole } from '../entities/users';
+>>>>>>> feat/rbac
 import { gerarHash, compararHash } from '../utils/bcripto';
 import { gerarToken } from '../utils/jwt';
 
@@ -7,7 +11,11 @@ interface ICadastroUsuario {
   nome: string;
   email: string;
   senha: string;
+<<<<<<< HEAD
   role?: UserarioRole;
+=======
+  role?: UsuarioRole;
+>>>>>>> feat/rbac
 }
 
 interface ILoginUsuario {
@@ -37,7 +45,11 @@ export class UsersService {
       nome,
       email,
       senha: senhaHash,
+<<<<<<< HEAD
       role: role || UserarioRole.PACIENTE,
+=======
+      role: role || UsuarioRole.PACIENTE,
+>>>>>>> feat/rbac
     });
 
     await userRepository.save(novoUsuario);
