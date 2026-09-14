@@ -198,20 +198,20 @@ graph TD
     Database[("🛢️ PostgreSQL Database<br/>(Tabela: usuarios)")]:::db
 
     %% Conexões do Fluxo
-    Client -->|1. Request HTTP  JSON| Middlewares
-    Middlewares -->|2. Valida Token & Role| Routes
-    Routes -->|3. Encaminha Requisição| Controllers
-    Controllers -->|4. Mapeia Body para Input DTO| InputDTO
-    InputDTO -->|5. Dados Tipados| Services
-    Services -->|6. Consulta/Persiste Dados| Repositories
-    Repositories <-->|7. Mapeamento TypeORM| Database
-    Services -->|8. Instancia Output DTO| OutputDTO
-    OutputDTO -->|9. Objeto Sanitizado (sem senha)| Controllers
+    Client -->|"1. Request HTTP + JSON"| Middlewares
+    Middlewares -->|"2. Valida Token & Role"| Routes
+    Routes -->|"3. Encaminha Requisição"| Controllers
+    Controllers -->|"4. Mapeia Body para Input DTO"| InputDTO
+    InputDTO -->|"5. Dados Tipados"| Services
+    Services -->|"6. Consulta/Persiste Dados"| Repositories
+    Repositories <-->|"7. Mapeamento TypeORM"| Database
+    Services -->|"8. Instancia Output DTO"| OutputDTO
+    OutputDTO -->|"9. Objeto Sanitizado (sem senha)"| Controllers
     
-    Controllers -.->|Captura Erros via next| ErrorHandler
-    Services -.->|Lança AppError| ErrorHandler
-    ErrorHandler -->|Resposta JSON de Erro| Client
-    Controllers -->|10. Resposta HTTP  JSON DTO| Client
+    Controllers -.->|"Captura Erros via next"| ErrorHandler
+    Services -.->|"Lança AppError"| ErrorHandler
+    ErrorHandler -->|"Resposta JSON de Erro"| Client
+    Controllers -->|"10. Resposta HTTP + JSON DTO"| Client
 ```
 
 
