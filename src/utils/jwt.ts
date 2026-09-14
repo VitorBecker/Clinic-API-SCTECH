@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { UserarioRole } from '../entities/users';
+import { UsuarioRole } from '../entities/users';
 
 // Interface do Payload que será guardado dentro do Token
 export interface TokenPayload {
   id: string;
-  role: UserarioRole;
+  role: UsuarioRole;
 }
 
 

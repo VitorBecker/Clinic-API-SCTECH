@@ -6,10 +6,11 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-export enum UserarioRole {
+export enum UsuarioRole {
     PACIENTE = "PACIENTE",
     MEDICO = "MEDICO",
-    ADMIN = "ADMIN"
+    ADMIN = "ADMIN",
+    ATENDENTE = "ATENDENTE"
 }
 
 @Entity('usuarios')
@@ -28,10 +29,10 @@ export class Usuario {
 
   @Column({
     type: 'enum',
-    enum: UserarioRole,
-    default: UserarioRole.PACIENTE,
+    enum: UsuarioRole,
+    default: UsuarioRole.ATENDENTE,
   })
-  role!: UserarioRole;
+  role!: UsuarioRole;
 
   @CreateDateColumn({ name: 'created_at' })
   criadoEm!: Date;

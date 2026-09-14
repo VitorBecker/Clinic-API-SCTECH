@@ -1,68 +1,79 @@
 import { userRepository } from '../repositories/UsersRepository';
-import { Usuario, UserarioRole } from '../entities/users';
+import { UsuarioRole } from '../entities/users';
 import { gerarHash, compararHash } from '../utils/bcripto';
 import { gerarToken } from '../utils/jwt';
+import { AppError } from '../errors/AppError';
+import { cadastroUsersDTO } from '../dtos/cadastroUsersDTO';
+import { loginUsersDTO } from '../dtos/loginUsersDTO';
+import { usersResponseDTO } from '../dtos/usersResponseDTO';
+import { loginResponseDTO } from '../dtos/loginResponseDTO';
 
-interface ICadastroUsuario {
+/* interface ICadastroUsuario {
   nome: string;
   email: string;
   senha: string;
-  role?: UserarioRole;
+  role?: UsuarioRole;
 }
 
 interface ILoginUsuario {
   email: string;
   senha: string;
-}
+} */
 
+
+// classe de autenticação e cadastro de usuários
 export class UsersService {
   // Cadastro de Usuário
-  async cadastrar({ nome, email, senha, role }: ICadastroUsuario) {
-    // 1. Validar preenchimento dos campos obrigatórios
+  // async cadastrar({ nome, email, senha, role }: ICadastroUsuario) {
+  async cadastrar(dados: cadastroUsersDTO): Promise<usersResponseDTO> {
+    const { nome, email, senha, role } = dados;
+
+    
+    // Validar preenchimento dos campos obrigatórios
     if (!nome || !email || !senha) {
-      throw new Error('Todos os campos obrigatórios devem ser preenchidos');
+      throw new AppError('Todos os campos obrigatórios devem ser preenchidos', 400);
     }
 
-    // 2. Verificar se e-mail já está em uso (duplicidade)
-    const usuarioExiste = await userRepository.findOneBy({ email });
+    // Verificar se e-mail já está em uso (duplicidade)
+    // const usuarioExiste = await userRepository.findOneBy({ email });
+    const usuarioExiste = await userRepository.buscarPorEmail(email);
+
     if (usuarioExiste) {
-      throw new Error('E-mail já cadastrado');
+      throw new AppError('E-mail já cadastrado', 409);
     }
 
-    // 3. Criptografar a senha do usuário
+    // Criptografar a senha do usuário
     const senhaHash = await gerarHash(senha);
 
-    // 4. Criar e salvar o novo usuário
-    const novoUsuario = userRepository.create({
+    // Criar e salvar o novo usuário
+    const novoUsuario = await userRepository.criar({
       nome,
       email,
       senha: senhaHash,
-      role: role || UserarioRole.PACIENTE,
+      role: role || UsuarioRole.ATENDENTE,
     });
 
-    await userRepository.save(novoUsuario);
-
-    // Retorna os dados omitindo a hash da senha por segurança
-    const { senha: _, ...usuarioSemSenha } = novoUsuario;
-    return usuarioSemSenha;
+    return new usersResponseDTO(novoUsuario);
   }
 
   // Autenticação de Usuário (Login)
-  async login({ email, senha }: ILoginUsuario) {
+  async login(dados: loginUsersDTO): Promise<loginResponseDTO> {
+    const { email, senha } = dados;
+
     if (!email || !senha) {
-      throw new Error('Credenciais inválidas');
+      throw new AppError('Credenciais inválidas', 401);
     }
 
     // Busca o usuário pelo e-mail
-    const usuario = await userRepository.findOneBy({ email });
+    const usuario = await userRepository.buscarPorEmail(email);
     if (!usuario) {
-      throw new Error('Credenciais inválidas');
+      throw new AppError('Credenciais inválidas', 401);
     }
 
     // Compara a senha informada com a hash salva no banco
     const senhaValida = await compararHash(senha, usuario.senha);
     if (!senhaValida) {
-      throw new Error('Credenciais inválidas');
+      throw new AppError('Credenciais inválidas', 401);
     }
 
     // Gera o token JWT com o id e role do usuário
@@ -71,6 +82,18 @@ export class UsersService {
       role: usuario.role,
     });
 
-    return { token };
+    return new loginResponseDTO(token);
+  }
+
+  // Busca o usuário completo a partir do id presente no token (RF10 - GET /users/me)
+  async buscarPorId(id: string): Promise<usersResponseDTO> {
+    
+    const usuario = await userRepository.buscarPorId(id);
+
+    if (!usuario) {
+      throw new AppError('Usuário não encontrado', 401);
+    }
+
+    return new usersResponseDTO(usuario);
   }
 }

@@ -4,12 +4,17 @@ import express from 'express'
 import cors from 'cors'
 import { AppDataSource } from './data-source'
 import { routes } from './routes';
-
+import { errorHandler } from './middlewares/errorMiddleware';
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(routes)
+
+// Rotas da aplicação
+app.use(routes);
+
+// Middleware centralizado de tratamento de erros (SEMPRE POR ÚLTIMO)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
