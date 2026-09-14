@@ -13,8 +13,8 @@ const routes = Router();
 const usersController = new UsersController();
 
 // Rotas públicas (Auth)
-routes.post('/auth/register', (req, res) => usersController.cadastrar(req, res));
-routes.post('/auth/login', (req, res) => usersController.login(req, res));
+routes.post('/auth/register', (req, res, next) => usersController.cadastrar(req, res, next));
+routes.post('/auth/login', (req, res, next) => usersController.login(req, res, next));
 
 
 /* routes.use("/auth", authRoutes)
