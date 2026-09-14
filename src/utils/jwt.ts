@@ -1,18 +1,10 @@
 import jwt from 'jsonwebtoken';
-<<<<<<< HEAD
-import { UserarioRole } from '../entities/users';
-=======
 import { UsuarioRole } from '../entities/users';
->>>>>>> feat/rbac
 
 // Interface do Payload que será guardado dentro do Token
 export interface TokenPayload {
   id: string;
-<<<<<<< HEAD
-  role: UserarioRole;
-=======
   role: UsuarioRole;
->>>>>>> feat/rbac
 }
 
 
